@@ -33,6 +33,24 @@ const requestHandler = (req, res) => {
           }); //writeFileSync large files this would not be optimal
         });
       }
+      if (url === '/users' && method === 'GET') {
+        const body = [];
+        req.on('data', chunk => {
+          console.log(chunk);
+          body.push(chunk);
+        });
+        return req.on('end', () => {
+          const parsedBody = Buffer.concat(body).toString();
+          console.log(parsedBody);
+          const message = parsedBody.split('=')[1];
+          //writeFile will need a callback for functions that should run after the file is created
+          fs.writeFile('message.txt', message, err => {
+            res.statusCode = 302;
+            res.setHeader('Location', '/');
+            return res.end();
+          }); //writeFileSync large files this would not be optimal
+        });
+      }
       res.setHeader('Content-Type', 'text/html');
       res.write('<html>');
       res.write('<head><title>Enter Messenge</title></head>');

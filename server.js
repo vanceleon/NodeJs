@@ -3,7 +3,7 @@ const fs = require('fs');
 // function rqListener(req, res) {
 
 // }
-
+//this is event driven arc
 const server = http.createServer(function(req, res) {
   const url = req.url;
   const method = req.method;
@@ -24,15 +24,17 @@ const server = http.createServer(function(req, res) {
       console.log(chunk);
       body.push(chunk);
     });
-    req.on('end', () => {
+    return req.on('end', () => {
       const parsedBody = Buffer.concat(body).toString();
       console.log(parsedBody);
       const message = parsedBody.split('=')[1];
-      fs.writeFileSync('message.txt', message);
+      //writeFile will need a callback for functions that should run after the file is created
+      fs.writeFile('message.txt', message, err => {
+        res.statusCode = 302;
+        res.setHeader('Location', '/');
+        return res.end();
+      }); //writeFileSync large files this would not be optimal
     });
-    res.statusCode = 302;
-    res.setHeader('Location', '/');
-    return res.end();
   }
   res.setHeader('Content-Type', 'text/html');
   res.write('<html>');

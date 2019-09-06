@@ -24,7 +24,7 @@ const requestHandler = (req, res) => {
         return req.on('end', () => {
           const parsedBody = Buffer.concat(body).toString();
           console.log(parsedBody);
-          const message = parsedBody.split('=')[1];
+          const message = parsedBody.split('=')[0];
           //writeFile will need a callback for functions that should run after the file is created
           fs.writeFile('message.txt', message, err => {
             res.statusCode = 302;

@@ -1,15 +1,26 @@
-const http = require('http');
 const express = require('express');
-
+const adminRoutes = require('./routes/admin');
 
 const app = express();
 
 
 
-const server = http.createServer(app);
+app.use('/', (req, res, next) => {
+    // console.log('always runs');
+    next();
+})
+
+
+
+app.use('/', (req, res, next) => {
+    // console.log("another middleware")
+    res.send('<h1>Hello from express</h1>');
+}); //add new middleware function
+
+// const server = http.createServer(app);
 
 // server.listen(3000);
 
 const port = process.env.PORT || 8000;
 
-server.listen(port, () => console.log(`=============Server on ${port}=============`));
+app.listen(port, () => console.log(`=============Server on ${port}=============`));

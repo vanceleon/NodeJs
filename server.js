@@ -5,12 +5,12 @@ const port = process.env.PORT || 8000;
 
 const app = express();
 
-app.use(adminRoutes);
+app.use('/admin',adminRoutes);
 app.use(shopRoutes);
 
 
 
-app.use((req, res, next) => {
+app.use((req, res, next) => { // catch all route to return page not found to user
     res.status(404).send('<h1>Page not found</h1>')
 })
 

@@ -1,22 +1,23 @@
 const express = require('express');
-const adminRoutes = require('./routes/admin');
+const adminData = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
+const rootDir = require('./util/path');
 const path = require('path');
 
 const port = process.env.PORT || 8000;
 
-const app = express();
+const server = express();
 
-app.use('/admin',adminRoutes);
-app.use('/shop/', shopRoutes);
+server.use('/admin', adminData.routes);
+server.use('/', shopRoutes);
+server.use(express.static(path.join(rootDir, 'public')))
 
 
-
-app.use((req, res, next) => { // catch all route to return page not found to user
+server.use((req, res, next) => { // catch all route to return page not found to user
     res.status(404).sendFile(path.join(__dirname, './', 'views', 'pageNotFound.html'));
 })
 
-app.listen(port, () =>
+server.listen(port, () =>
   console.log(`=============Server on ${port}=============`)
 );
 

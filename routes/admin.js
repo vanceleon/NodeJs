@@ -3,7 +3,9 @@ const bodyParser = require('body-parser');
 const rootDir = require('../util/path');
 const path = require('path');
 
-router.use(bodyParser.urlencoded({extended: false}));
+const products = [];
+
+router.use(bodyParser.urlencoded({ extended: false }));
 
 router.get('/add-product', (req, res, next) => {
   // console.log("another middleware product")
@@ -11,8 +13,11 @@ router.get('/add-product', (req, res, next) => {
 }); //add new middleware function
 
 router.post('/add-product', (req, res, next) => {
-  console.log(req.body);
-  res.redirect('/')
+ //   console.log(req.body);
+  products.push({ title: req.body.title }); //this method is shared across the server, and never really done this way
+//   console.log(products)
+  res.redirect('/');
 });
 
-module.exports = router;
+exports.routes = router;
+exports.products = products;

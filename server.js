@@ -21,7 +21,7 @@ server.listen(port, () =>
   console.log(`=============Server on ${port}=============`)
 );
 
-// app.use('/', (req, res, next) => {
-//     // console.log('always runs');
-//     next();
-// })
+server.use('/', (req, res, next) => {
+    // console.log('always runs');
+    next();
+})

@@ -1,23 +1,18 @@
-const router = require('express').Router();
-const bodyParser = require('body-parser');
-const rootDir = require('../util/path');
 const path = require('path');
 
-const products = [];
+const express = require('express');
 
-router.use(bodyParser.urlencoded({ extended: false }));
+const adminController = require('../controllers/admin');
 
-router.get('/add-product', (req, res, next) => {
-  // console.log("another middleware product")
-  res.sendFile(path.join(rootDir, 'views', 'addProduct.html'));
-}); //add new middleware function
+const router = express.Router();
 
-router.post('/add-product', (req, res, next) => {
- //   console.log(req.body);
-  products.push({ title: req.body.title }); //this method is shared across the server, and never really done this way
-//   console.log(products)
-  res.redirect('/');
-});
+// /admin/add-product => GET
+router.get('/add-product', adminController.getAddProduct);
 
-exports.routes = router;
-exports.products = products;
+// /admin/products => GET
+router.get('/products', adminController.getProducts);
+
+// /admin/add-product => POST
+router.post('/add-product', adminController.postAddProduct);
+
+module.exports = router;
